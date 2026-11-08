@@ -18,13 +18,13 @@ variable "aws_region" {
 }
 
 variable "domain_name" {
-  description = "Optional custom domain (e.g. obaidinfo.xyz). Needs hosted_zone_id."
+  description = "Optional custom domain (e.g. obaidabdullah.com). Needs hosted_zone_id."
   type        = string
   default     = ""
 }
 
 variable "extra_domain_names" {
-  description = "Other names that serve the same site, e.g. [\"www.obaidinfo.xyz\"]. Must be in the same hosted zone."
+  description = "Other names that serve the same site, e.g. [\"www.obaidabdullah.com\"]. Must be in the same hosted zone."
   type        = list(string)
   default     = []
 }
@@ -143,7 +143,7 @@ resource "aws_cloudfront_response_headers_policy" "security" {
       override                   = true
     }
     content_security_policy {
-      content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.execute-api.${var.aws_region}.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+      content_security_policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://*.execute-api.${var.aws_region}.amazonaws.com https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com"
       override                = true
     }
   }

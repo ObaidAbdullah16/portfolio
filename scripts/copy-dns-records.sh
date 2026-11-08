@@ -3,12 +3,12 @@
 # in this account, before you point the domain's name servers at the new zone. Old project
 # sub-domains then keep working through the switch; the old website and old email do not move.
 #
-#   bash scripts/copy-dns-records.sh obaidinfo.xyz                  # dry run: lists every old record + KEEP/SKIP
-#   bash scripts/copy-dns-records.sh obaidinfo.xyz --apply          # copies the KEEP records into the new zone
+#   bash scripts/copy-dns-records.sh example.com                  # dry run: lists every old record + KEEP/SKIP
+#   bash scripts/copy-dns-records.sh example.com --apply          # copies the KEEP records into the new zone
 #   ... --from-profile old        AWS CLI profile of the old account (default: OLD_AWS_PROFILE in config.env, or "old")
 #   ... --from-zone Z123          the old zone's ID, if the old account has more than one zone for the domain
-#   ... --skip app.obaidinfo.xyz  do not copy this name (repeat for more)
-#   ... --keep www.obaidinfo.xyz  copy this name although the rules below would skip it (repeat for more)
+#   ... --skip app.example.com  do not copy this name (repeat for more)
+#   ... --keep www.example.com  copy this name although the rules below would skip it (repeat for more)
 #   ... --from-file F.json        restore from a backup that 'down portfolio --all' saved (no old account needed)
 #
 # Rules (the new site and email are set up by domain-setup.sh and Terraform):

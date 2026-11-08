@@ -67,6 +67,28 @@ def main() -> int:
             problems.append(f"service {s['id']} case study is missing {missing}")
         elif not 3 <= len(cs["flow"]) <= 7:
             problems.append(f"service {s['id']} case study flow should have 3-7 steps")
+    ids = {s["id"] for s in data["services"]}
+    for sid in data.get("featured", []):
+        if sid not in ids:
+            problems.append(f"featured service {sid} does not exist")
+    for slug in data.get("selected_work", []):
+        if slug not in slugs:
+            problems.append(f"selected_work {slug} is not a project")
+    for key in ("headline", "availability", "photo", "proof_bar", "open_source", "resume", "faq"):
+        if not data.get(key):
+            problems.append(f"site.json is missing {key}")
+    for s in data["services"]:
+        if not s.get("short"):
+            problems.append(f"service {s['id']} has no short description")
+    for p in data["projects"]:
+        if not p.get("short"):
+            problems.append(f"project {p['slug']} has no short description")
+    site_domain = urlparse(data.get("site_url", "")).hostname or ""
+    if site_domain and not data["contact"]["email"].endswith("@" + site_domain):
+        problems.append(f"contact.email is not on the site's domain {site_domain}")
+    other = {h for h in __import__("re").findall(r"https?://([a-z0-9.-]+)", json.dumps(data)) if h.endswith(".xyz")}
+    if other:
+        problems.append(f"site.json links to other personal domains: {sorted(other)}")
     for p in data["projects"]:
         for sid in p.get("services", []):
             if sid not in {s["id"] for s in data["services"]}:

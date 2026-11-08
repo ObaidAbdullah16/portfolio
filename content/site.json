@@ -1,19 +1,61 @@
 {
   "name": "Obaid Abdullah",
   "role": "Cloud, DevOps & DevSecOps engineer",
-  "tagline": "I make small teams' cloud cheaper, their pipelines safer and their outages shorter - with fixed-price, evidence-first engagements.",
-  "location": "Indore, India · working with teams worldwide (IST, overlaps EU mornings and US evenings)",
+  "headline": "Cheaper cloud. Safer pipelines. Shorter outages.",
+  "tagline": "I help small teams on AWS and GitHub cut cloud waste, lock down their CI/CD and recover from incidents faster - in fixed-price packages of 2 to 5 days.",
+  "location": "Indore, India · IST (UTC+5:30)",
+  "availability": "Taking freelance projects from December 2026",
+  "photo": {
+    "square": "assets/img/obaid-640",
+    "small": "assets/img/obaid-320",
+    "alt": "Obaid Abdullah"
+  },
   "about": [
-    "I am a final-year Computer Engineering student focused on cloud infrastructure, CI/CD and security. Everything on this page is built and run by me: Terraform on AWS, GitHub Actions with OIDC, Kubernetes with GitOps, and an AI incident assistant with hard cost caps.",
-    "I work in small, fixed-scope packages with a clear deliverable - a report, a pull request, a runbook - so you know exactly what you get and what it costs before we start."
+    "I'm Obaid, a final-year Computer Engineering student at IET DAVV, Indore, and I build cloud infrastructure the way production teams do: Terraform on AWS, GitHub Actions without stored keys, Kubernetes with GitOps, and monitoring that tells you what broke and why.",
+    "Everything on this site is built and run by me, in the open. I work in small, fixed-scope packages that end with something you keep - a report, a pull request or a runbook - and I never need your passwords: read-only roles or a pull request you review.",
+    "I have an offer to join DHL full-time from June 2027. Until then I take a few freelance projects at a time, contribute to CNCF open source, and keep learning - next up, the AWS Solutions Architect Associate exam."
+  ],
+  "proof_bar": [
+    {
+      "value": "7",
+      "label": "merged pull requests in CNCF projects (Kyverno, PipeCD, Meshery)"
+    },
+    {
+      "value": "11",
+      "label": "open-source repositories, each labelled live, on demand or demo"
+    },
+    {
+      "value": "0 → 100",
+      "label": "security score of the hardening kit's example workflows, before and after"
+    },
+    {
+      "value": "$5/mo",
+      "label": "hard cost cap on my live AI demo, enforced in code"
+    }
   ],
   "contact": {
-    "email": "obaidabdullah1610@gmail.com",
+    "email": "hello@obaidabdullah.com",
     "github": "https://github.com/ObaidAbdullah16",
     "linkedin": "https://www.linkedin.com/in/obaid-abdullah-a66556283/",
-    "calendar": ""
+    "calendar": "https://cal.com/obaid-abdullah-dgiwty/15min",
+    "calendar_scan": "https://cal.com/obaid-abdullah-dgiwty/30min",
+    "web3forms_key": "ffde603c-947d-4e8d-a473-548dba970239",
+    "response": "I reply within one working day (IST).",
+    "payments": "Upwork, international bank transfer, or UPI / bank transfer in India. Direct clients: 50% upfront, 50% on delivery."
   },
-  "site_url": "https://obaidinfo.xyz",
+  "site_url": "https://obaidabdullah.com",
+  "featured": [
+    "S2",
+    "S1",
+    "S8",
+    "S7"
+  ],
+  "selected_work": [
+    "lifeline",
+    "gha-hardening-kit",
+    "shipit-platform",
+    "incidentscribe-ai"
+  ],
   "services": [
     {
       "id": "S2",
@@ -87,7 +129,13 @@
           "Organisation-wide rulesets (quoted separately)",
           "Using any credential found - every secret is reported by type and location, and its owner rotates it"
         ]
-      }
+      },
+      "short": "Close the CI holes behind the 2025-26 supply-chain attacks - fixed in a pull request you review.",
+      "highlights": [
+        "Every workflow scored and explained",
+        "Actions pinned, tokens least-privilege, AWS keys replaced by OIDC",
+        "CI checks so it stays fixed"
+      ]
     },
     {
       "id": "S1",
@@ -168,7 +216,13 @@
           "Re-architecting applications or buying Savings Plans for you (advice only)",
           "Any change without your explicit approval"
         ]
-      }
+      },
+      "short": "A read-only audit that finds what you pay AWS for and don't use, with the fix for each item.",
+      "highlights": [
+        "12 waste checks across every region",
+        "Savings ranked in dollars",
+        "Exact fix command for each finding"
+      ]
     },
     {
       "id": "S8",
@@ -245,7 +299,13 @@
           "Compliance certification or legal advice - the DPDP view is technical readiness only",
           "Changes made by me in your account"
         ]
-      }
+      },
+      "short": "25 checks behind most cloud breaches - public data, open ports, old keys, no logs - scored and fixed as code.",
+      "highlights": [
+        "Read-only review of 25 controls",
+        "A score and the top 5 risks in plain English",
+        "Fixes as Terraform, then a retest"
+      ]
     },
     {
       "id": "S3",
@@ -324,7 +384,8 @@
           "Changes to application code beyond what containerising needs",
           "24/7 support"
         ]
-      }
+      },
+      "short": "Tested, scanned, signed releases with automatic rollback - no more deploying by SSH."
     },
     {
       "id": "S6",
@@ -404,7 +465,8 @@
           "Building new AI features",
           "Legal advice on privacy law"
         ]
-      }
+      },
+      "short": "Spend caps, cost per feature and PII redaction for your LLM features."
     },
     {
       "id": "S5",
@@ -479,7 +541,8 @@
           "Being on call for you",
           "Migrating to a different monitoring vendor"
         ]
-      }
+      },
+      "short": "Dashboards, a handful of alerts that matter, and runbooks, so you hear about outages first."
     },
     {
       "id": "S4",
@@ -554,7 +617,8 @@
           "Changes to production settings (quoted as drill + hardening)",
           "Application-level failover"
         ]
-      }
+      },
+      "short": "A timed restore of your real backups into a sandbox, with RTO/RPO measured and written down."
     },
     {
       "id": "S7",
@@ -627,7 +691,13 @@
           "Application changes",
           "Managing the server month to month (care plan available)"
         ]
-      }
+      },
+      "short": "Your VPS or EC2 server hardened and rebuilt from code, with a before/after security score.",
+      "highlights": [
+        "Key-only SSH, firewall, fail2ban, auto-patching",
+        "Lynis score before and after",
+        "The server rebuilt from Ansible code"
+      ]
     }
   ],
   "projects": [
@@ -658,7 +728,8 @@
         "S1",
         "S2",
         "S4"
-      ]
+      ],
+      "short": "An open-source scorecard that checks whether a project would survive a bad day: domains, access, CI, backups and cost runway."
     },
     {
       "slug": "shipit-platform",
@@ -691,7 +762,8 @@
       "services": [
         "S3",
         "S2"
-      ]
+      ],
+      "short": "Secure CI/CD on ECS Fargate: signed releases deployed by digest, and a bad release rolls itself back."
     },
     {
       "slug": "kubeops-sre-lab",
@@ -722,7 +794,8 @@
       ],
       "services": [
         "S5"
-      ]
+      ],
+      "short": "A Kubernetes platform broken on purpose: GitOps, policies, SLO alerts and four game days with postmortems."
     },
     {
       "slug": "incidentscribe-ai",
@@ -752,7 +825,8 @@
       "services": [
         "S6",
         "S5"
-      ]
+      ],
+      "short": "Turns an alert into a short incident brief with Bedrock - PII removed first, spend hard-capped."
     },
     {
       "slug": "serverforge",
@@ -786,7 +860,8 @@
       "services": [
         "S7",
         "S3"
-      ]
+      ],
+      "short": "Linux servers as code with Ansible and Jenkins: hardened in one run, released behind a health gate."
     },
     {
       "slug": "bedrock-cost-calculator",
@@ -814,7 +889,8 @@
       "services": [
         "S6",
         "S1"
-      ]
+      ],
+      "short": "Shows the real Amazon Bedrock bill - prompts, history, RAG, agents - and what cuts it most."
     },
     {
       "slug": "aws-bill-doctor",
@@ -866,7 +942,8 @@
           "label": "AWS Health Check summary",
           "url": "demos/health-check/index.html"
         }
-      ]
+      ],
+      "short": "Read-only AWS audits: 12 cost checks with savings estimates and a 25-control security baseline."
     },
     {
       "slug": "gha-hardening-kit",
@@ -897,7 +974,8 @@
       "services": [
         "S2",
         "S3"
-      ]
+      ],
+      "short": "Scores a repository's GitHub Actions security and fixes it: 16 rules, before/after workflows, OIDC module."
     },
     {
       "slug": "restore-drill-kit",
@@ -924,7 +1002,210 @@
       ],
       "services": [
         "S4"
-      ]
+      ],
+      "short": "Restores a database backup into a sandbox, verifies the data and measures how long recovery takes."
+    }
+  ],
+  "open_source": {
+    "intro": "I contribute to CNCF projects and maintain my own. Merged and open pull requests are listed separately - nothing is counted twice.",
+    "merged": [
+      {
+        "repo": "meshery/meshery",
+        "number": 19791,
+        "title": "[Models] Add VirtualNetworksSubnet relationships for Azure FlexibleServer resources",
+        "date": "2026-06-27"
+      },
+      {
+        "repo": "meshery/meshery",
+        "number": 19663,
+        "title": "[Docs] Add relationship testing, validation, and contribution best practices",
+        "date": "2026-09-11"
+      },
+      {
+        "repo": "pipe-cd/pipecd",
+        "number": 6815,
+        "title": "docs: add AI usage guidelines to CONTRIBUTING.md",
+        "date": "2026-07-20"
+      },
+      {
+        "repo": "pipe-cd/pipecd",
+        "number": 6799,
+        "title": "docs: fix PipeCD docs package metadata links",
+        "date": "2026-07-11"
+      },
+      {
+        "repo": "pipe-cd/pipecd",
+        "number": 6798,
+        "title": "docs: clarify docs version directories and fix wording",
+        "date": "2026-07-10"
+      },
+      {
+        "repo": "kyverno/kyverno",
+        "number": 16164,
+        "title": "test: fix webhook registration typo",
+        "date": "2026-06-29"
+      },
+      {
+        "repo": "kyverno/kyverno",
+        "number": 16162,
+        "title": "docs: fix README workflow badge and AI policy link",
+        "date": "2026-06-29"
+      }
+    ],
+    "open": [
+      {
+        "repo": "meshery/meshery",
+        "number": 20831,
+        "title": "[Models] Add Azure Cache Redis to Virtual Network Subnet relationship",
+        "date": "2026-07-20"
+      },
+      {
+        "repo": "meshery/meshery",
+        "number": 19786,
+        "title": "[Docs] Add glossary section for Meshery terminology",
+        "date": "2026-05-31"
+      },
+      {
+        "repo": "meshery/meshery",
+        "number": 19776,
+        "title": "[docs] Add \"What's Next?\" section to Quick Start guide",
+        "date": "2026-05-30"
+      },
+      {
+        "repo": "CCExtractor/Flood_Mobile",
+        "number": 267,
+        "title": "[FIX] Fixes #264: onboarding overflow + Flutter 3/Dart 3 compatibility",
+        "date": "2026-04-04"
+      },
+      {
+        "repo": "CCExtractor/rutorrent-flutter",
+        "number": 199,
+        "title": "[FIX] Migrate deprecated Flutter APIs (PopScope, TextButton, Theme/TextTheme updates)",
+        "date": "2026-04-04"
+      }
+    ],
+    "updated": "8 November 2026",
+    "home_intro": "Seven merged pull requests in Kyverno, PipeCD and Meshery, five more in review, and Lifeline - an open-source scorecard I created and maintain."
+  },
+  "resume": {
+    "pdf": "assets/Obaid-Abdullah-Resume.pdf",
+    "summary": "Final-year Computer Engineering student who builds production-style DevOps and cloud systems on AWS: Terraform, GitHub Actions with OIDC, Docker and ECS, Kubernetes with GitOps, and SLO-based observability. 7 merged pull requests in CNCF projects.",
+    "availability": "Freelance projects from December 2026 · remote or off-cycle internships, January-May 2027 · joining DHL full-time from June 2027.",
+    "skills": [
+      {
+        "area": "Cloud & IaC",
+        "items": "AWS (ECS Fargate, EC2, Lambda, RDS, S3, IAM, CloudFront, CloudWatch, Bedrock), Terraform, Ansible"
+      },
+      {
+        "area": "CI/CD & containers",
+        "items": "GitHub Actions (OIDC), Jenkins (JCasC), Argo CD (GitOps), Docker, Kubernetes (kind, EKS), Helm"
+      },
+      {
+        "area": "Observability",
+        "items": "Prometheus, Grafana, Loki, CloudWatch alarms and dashboards, SLOs with burn-rate alerts, runbooks"
+      },
+      {
+        "area": "Security",
+        "items": "Least-privilege IAM, Trivy, Checkov, Syft SBOMs, cosign signing, Kyverno, gitleaks, zizmor, Prowler"
+      },
+      {
+        "area": "Languages & data",
+        "items": "Python, Go, Bash, SQL, C++; PostgreSQL, Redis, DynamoDB; Linux, Git, Nginx, systemd"
+      }
+    ],
+    "projects": [
+      {
+        "name": "ShipIt Platform",
+        "stack": "Go, Python, Terraform, AWS ECS Fargate, GitHub Actions, cosign",
+        "slug": "shipit-platform",
+        "points": [
+          "Built a CI/CD platform on AWS ECS Fargate for a Go API and a Python worker (PostgreSQL, Redis): every release is tested, scanned with Trivy, given an SBOM, signed with keyless cosign and deployed by image digest.",
+          "Enabled the ECS deployment circuit breaker so a deliberately broken release rolls back automatically while the old version keeps serving; a probe script recorded no user-facing errors during rollback."
+        ]
+      },
+      {
+        "name": "KubeOps SRE Lab",
+        "stack": "Kubernetes, Argo CD, Helm, Kyverno, Prometheus, Grafana, Loki",
+        "slug": "kubeops-sre-lab",
+        "points": [
+          "Built a one-command Kubernetes platform with Argo CD app-of-apps GitOps, Kyverno policies (including image-signature verification) and Prometheus, Grafana and Loki observability.",
+          "Defined SLOs (99.5% availability, 99% of requests under 300 ms) with multi-window burn-rate alerts unit-tested by promtool; ran 4 scripted game days with runbooks and 3 postmortems."
+        ]
+      },
+      {
+        "name": "ServerForge",
+        "stack": "Ansible, Jenkins, Linux, Nginx, Terraform",
+        "slug": "serverforge",
+        "points": [
+          "Automated hardened Ubuntu servers with 8 idempotent Ansible roles, raising the Lynis hardening score from 60 to 80 in the lab.",
+          "Built a Jenkins pipeline as code (JCasC) with staging, manual approval, rolling deploys, health-gated automatic rollback and nightly drift detection."
+        ]
+      },
+      {
+        "name": "IncidentScribe AI",
+        "stack": "Python, AWS Lambda, Bedrock, Terraform",
+        "slug": "incidentscribe-ai",
+        "points": [
+          "Turned CloudWatch and Alertmanager alerts into runbook-grounded summaries; personal data and secrets are redacted before any model call (recall 1.0 on a 30-incident evaluation set) and spend is hard-capped at $4.50 a month."
+        ]
+      },
+      {
+        "name": "AWS Bill Doctor",
+        "stack": "Python, boto3, Prowler, CloudFormation",
+        "slug": "aws-bill-doctor",
+        "points": [
+          "Built a read-only AWS audit tool: 12 cost checks across all regions with savings estimates, and a 25-control security baseline on Prowler with a score, fixes as code and a retest."
+        ]
+      }
+    ],
+    "open_source": [
+      {
+        "name": "Lifeline (creator and maintainer)",
+        "stack": "Go, GitHub Action, SARIF, GoReleaser, cosign",
+        "points": [
+          "Open-source operational-resilience scorecard with zero third-party Go modules and keyless-signed releases with SBOMs; runs weekly on itself as a GitHub Action."
+        ]
+      },
+      {
+        "name": "CNCF contributor",
+        "stack": "Kyverno, PipeCD, Meshery",
+        "points": [
+          "7 merged pull requests, including a Meshery model for Azure FlexibleServer-VirtualNetwork subnet relationships (#19791), a Kyverno webhook test fix (#16164) and PipeCD contributor guidelines for AI-assisted changes (#6815)."
+        ]
+      }
+    ],
+    "education": [
+      {
+        "school": "Institute of Engineering & Technology (IET), DAVV, Indore",
+        "degree": "B.E. Computer Engineering",
+        "years": "2023 - 2027"
+      }
+    ],
+    "other": [
+      "Incoming full-time role at DHL from June 2027 (offer accepted).",
+      "Courses (Udemy): Decoding DevOps; Ultimate AWS Certified Solutions Architect - Associate (in progress); Linux Administration Bootcamp; SQL Bootcamp; Git & GitHub Bootcamp."
+    ]
+  },
+  "faq": [
+    {
+      "q": "Do you need access to my production systems?",
+      "a": "No passwords, ever. Audits use a read-only role you create and can delete at any time; changes arrive as a pull request you review and merge yourself."
+    },
+    {
+      "q": "How long does a project take?",
+      "a": "2 to 10 working days depending on the package. You get the timeline and the fixed price before we start."
+    },
+    {
+      "q": "What if you find nothing worth fixing?",
+      "a": "Then you hear that early, with the evidence. For the AWS Bill Doctor on accounts above $1,000 a month: if I don't find at least my fee in yearly savings, you don't pay."
+    },
+    {
+      "q": "What happens to my data?",
+      "a": "Reports stay between us. When the project ends I delete your data and confirm it in writing."
+    },
+    {
+      "q": "How do I pay?",
+      "a": "Upwork, international bank transfer, or UPI / bank transfer in India. Direct clients pay 50% upfront and 50% on delivery."
     }
   ]
 }

@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Set up a custom domain for the portfolio in Route 53, plus email forwarding records.
 #
-#   bash scripts/domain-setup.sh obaidinfo.xyz              # dry run: shows what it would change
-#   bash scripts/domain-setup.sh obaidinfo.xyz --apply      # step 1: hosted zone + records, prints 4 name servers
+#   bash scripts/domain-setup.sh obaidabdullah.com              # dry run: shows what it would change
+#   bash scripts/domain-setup.sh obaidabdullah.com --apply      # step 1: hosted zone + records, prints 4 name servers
 #   (change the name servers at your registrar, wait until they show up)
-#   bash scripts/domain-setup.sh obaidinfo.xyz --connect    # step 2: checks the name servers, sets the GitHub
+#   bash scripts/domain-setup.sh obaidabdullah.com --connect    # step 2: checks the name servers, sets the GitHub
 #                                                            # variables and redeploys the site on the domain
 # Moving the domain from a zone in ANOTHER AWS account? Between step 1 and the name-server change, copy the
-# records you want to keep: bash scripts/copy-dns-records.sh obaidinfo.xyz (Portfolio guide, section 5).
+# records you want to keep: bash scripts/copy-dns-records.sh <domain> (only when moving a domain between accounts).
 #
 # What it does (idempotent - safe to run again):
 #   1. Finds the public hosted zone for the domain, or creates it ($0.50/month), and saves
