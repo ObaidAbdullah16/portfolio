@@ -146,7 +146,7 @@ PY
 if [[ -n "${cf:-}" ]]; then
   echo
   warn "The old account's CloudFront still uses $DOMAIN / www.$DOMAIN (the old website):"
-  sed 's/^/    /' <<<"$cf"
+  while IFS= read -r line; do printf '    %s\n' "$line"; done <<<"$cf"
   warn "Before 'domain-setup.sh $DOMAIN --connect': old account > CloudFront > that distribution > Edit >"
   warn "remove $DOMAIN and www.$DOMAIN from 'Alternate domain names' > Save. (Disabling alone is not enough.)"
 fi
