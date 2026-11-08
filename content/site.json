@@ -1,0 +1,930 @@
+{
+  "name": "Obaid Abdullah",
+  "role": "Cloud, DevOps & DevSecOps engineer",
+  "tagline": "I make small teams' cloud cheaper, their pipelines safer and their outages shorter - with fixed-price, evidence-first engagements.",
+  "location": "Indore, India · working with teams worldwide (IST, overlaps EU mornings and US evenings)",
+  "about": [
+    "I am a final-year Computer Engineering student focused on cloud infrastructure, CI/CD and security. Everything on this page is built and run by me: Terraform on AWS, GitHub Actions with OIDC, Kubernetes with GitOps, and an AI incident assistant with hard cost caps.",
+    "I work in small, fixed-scope packages with a clear deliverable - a report, a pull request, a runbook - so you know exactly what you get and what it costs before we start."
+  ],
+  "contact": {
+    "email": "hello@obaidinfo.xyz",
+    "github": "https://github.com/ObaidAbdullah16",
+    "linkedin": "",
+    "calendar": ""
+  },
+  "site_url": "https://obaidinfo.xyz",
+  "services": [
+    {
+      "id": "S2",
+      "name": "GitHub Actions Pipeline Hardening",
+      "days": "2-3 days",
+      "problem": "The 2025-26 CI supply-chain attacks (tj-actions, Trivy, Checkmarx actions) stole secrets from pipelines that used version tags and long-lived cloud keys.",
+      "deliverables": [
+        "Audit report with a score per workflow",
+        "Every action pinned to a commit SHA",
+        "Least-privilege GITHUB_TOKEN permissions",
+        "AWS access via OIDC instead of stored keys",
+        "Secret scanning, safe pull_request_target, Dependabot with cooldown",
+        "Add-on: secrets in git history + \"were we affected?\" check for the 2025-26 incidents, with a rotation plan"
+      ],
+      "access": "Works through one pull request - no production access needed.",
+      "founding": "$99-199",
+      "standard": "$250-450",
+      "india": "₹6k-15k",
+      "proof": "gha-hardening-kit",
+      "case_study": {
+        "title": "Locking down CI pipelines after the 2025-26 supply-chain attacks",
+        "summary": "Every workflow is scored and explained, then fixed in reviewable pull requests: actions pinned to commit SHAs, least-privilege tokens, injection-safe scripts, and AWS access through OIDC instead of stored keys.",
+        "situation": "A team with 5-50 GitHub Actions workflows written over the years by different people, using version tags, default write tokens and an AWS access key stored as a secret.",
+        "problem": [
+          "Attacks such as the tj-actions/changed-files and trivy-action tag hijacks stole secrets from every pipeline that used a moving tag.",
+          "Default tokens can write to the repository, and pull_request_target workflows can run untrusted code next to secrets.",
+          "A long-lived cloud key in a secret turns a CI compromise into a cloud compromise."
+        ],
+        "solution": [
+          "An audit that scores each workflow 0-100 against 16 rules and explains every finding in plain words.",
+          "Pull request 1: SHA pins, permissions blocks, safe handling of untrusted input, timeouts, no persisted credentials.",
+          "Pull request 2: stored AWS keys replaced by an OIDC role that only main, or a protected environment, can assume.",
+          "CI gates (zizmor, actionlint, a pin check) and Dependabot with a cooldown, so it stays fixed.",
+          "Optional add-on: a full-history secrets scan on a fresh clone (values never shown or tested) and an incident-exposure check against the tj-actions, reviewdog, Trivy and Checkmarx windows, turned into a rotation plan."
+        ],
+        "flow": [
+          "Read-only audit: a score per workflow",
+          "PR 1: pins, permissions, injection fixes",
+          "PR 2: OIDC role, no stored keys",
+          "CI gates and Dependabot cooldown",
+          "Before/after report"
+        ],
+        "plan": [
+          {
+            "when": "Day 1",
+            "what": "I audit every workflow and read each one by hand to understand its intent (why a self-hosted runner, why pull_request_target)."
+          },
+          {
+            "when": "Day 2",
+            "what": "Pull request 1, one commit per topic so you can review it step by step."
+          },
+          {
+            "when": "Day 3",
+            "what": "Pull request 2 for OIDC (Terraform module or console steps you apply), the CI gates, and the before/after report."
+          }
+        ],
+        "evidence": [
+          "Five realistic example workflows score 0/100 (F) before and 100/100 (A) after hardening.",
+          "The kit audits itself in CI and fails below 90; findings appear in GitHub's Security tab as SARIF.",
+          "The AWS login demo uses a role with zero permissions: it proves 'no stored keys' without any risk.",
+          "`ghaudit exposure` checks today's workflows, the git history inside each incident window and the workflow runs in those windows; the kit runs it on itself in CI."
+        ],
+        "keep": [
+          "Audit report with before/after scores",
+          "Two reviewed pull requests",
+          "OIDC role as Terraform or console steps",
+          "A 20-point checklist for future workflows"
+        ],
+        "not_included": [
+          "Rewriting your build or test logic",
+          "Organisation-wide rulesets (quoted separately)",
+          "Using any credential found - every secret is reported by type and location, and its owner rotates it"
+        ]
+      }
+    },
+    {
+      "id": "S1",
+      "name": "AWS Bill Doctor (cost & waste audit)",
+      "days": "3-5 days",
+      "problem": "Cloud waste is close to a third of spend for many teams, and small teams have nobody whose job is FinOps.",
+      "deliverables": [
+        "Read-only scan with 12 waste checks",
+        "Ranked savings list with $ estimates",
+        "3-5 quick fixes done with you",
+        "Budgets and anomaly alerts",
+        "30-day follow-up check",
+        "Optional: add the security check (S8) as one \"AWS Health Check\" - one role, one report"
+      ],
+      "access": "Read-only IAM role you can revoke at any time.",
+      "founding": "$149-299",
+      "standard": "$300-600",
+      "india": "₹9k-20k",
+      "guarantee": "For accounts spending $1,000+/month: if I do not find at least my fee in yearly savings, you do not pay.",
+      "proof": "aws-bill-doctor",
+      "case_study": {
+        "title": "Finding the waste in a cloud bill, without touching production",
+        "summary": "A read-only scan of every region finds idle and outdated resources, prices each one, and turns them into a ranked list of fixes with the exact command. The safe ones are applied together, on a call, after your approval.",
+        "situation": "A startup or agency spending $500-5,000 a month on AWS, with nobody whose job is cost. The bill grew with every project, and nobody is sure which resources are still needed.",
+        "problem": [
+          "Resources outlive the projects that created them: unattached disks, load balancers with no targets, idle NAT gateways, instances stopped for months but still paying for storage.",
+          "Defaults cost money: gp2 disks, logs kept forever, previous-generation instance types.",
+          "Nobody has time to check every region by hand, and fear of breaking something stops the clean-up."
+        ],
+        "solution": [
+          "A read-only IAM role that you create and can revoke at any time. The tool cannot change anything.",
+          "12 waste checks across every enabled region, each with a monthly saving estimate and a risk level.",
+          "A ranked report with the exact command for every fix. Commands that delete something take a snapshot or image first and wait for it.",
+          "Budgets and anomaly alerts, so the bill can't drift back unnoticed."
+        ],
+        "flow": [
+          "Read-only role (you create it)",
+          "Scan: 12 checks, every region",
+          "Ranked report: saving, risk, fix",
+          "Safe fixes together, with approval",
+          "Budgets and anomaly alerts",
+          "Re-scan after 30 days"
+        ],
+        "plan": [
+          {
+            "when": "Day 1",
+            "what": "You create the read-only role from a template (CloudFormation or Terraform). I run the scan across every region."
+          },
+          {
+            "when": "Day 2",
+            "what": "I check each finding against Cost Explorer and your context, remove false alarms, and write the report."
+          },
+          {
+            "when": "Day 3",
+            "what": "Walkthrough call. We apply 3-5 low-risk fixes together; you approve every command."
+          },
+          {
+            "when": "Day 4-5",
+            "what": "Budgets and anomaly alerts, a short handover note, and you revoke my access."
+          },
+          {
+            "when": "+30 days",
+            "what": "A second scan to confirm the savings held and nothing new crept in."
+          }
+        ],
+        "evidence": [
+          "On a synthetic demo account (simulated with moto), the scan finds 20 issues worth $616.37 a month: 4 high, 7 medium, 5 low and 4 informational.",
+          "Every finding carries the exact AWS CLI command, and the sample report prints cleanly to PDF.",
+          "46 automated tests, including one that records every API call of a full scan and proves the client's read-only policy covers it."
+        ],
+        "keep": [
+          "HTML and PDF report ranked by monthly saving",
+          "3-5 fixes applied with you",
+          "Budgets and anomaly alerts",
+          "A second scan after 30 days"
+        ],
+        "not_included": [
+          "Re-architecting applications or buying Savings Plans for you (advice only)",
+          "Any change without your explicit approval"
+        ]
+      }
+    },
+    {
+      "id": "S8",
+      "name": "AWS Security Baseline Check",
+      "days": "3-5 days",
+      "problem": "About 80% of 2025's cloud breaches came from basic mistakes: public buckets, open SSH, old keys, no logging. Small teams rarely check.",
+      "deliverables": [
+        "Read-only review of 25 controls (identity, logging, data, network, secrets)",
+        "Scored report with the top 5 risks in plain English",
+        "Every fix as code: Terraform module inputs or one command",
+        "45-minute walkthrough and a retest scan",
+        "India: DPDP technical-safeguards view and 72-hour breach runbook"
+      ],
+      "access": "Read-only role (SecurityAudit + ViewOnlyAccess) that can never read your data; you delete it at the end.",
+      "founding": "$149-299",
+      "standard": "$300-900",
+      "india": "₹9k-30k",
+      "proof": "aws-bill-doctor",
+      "case_study": {
+        "title": "Closing the basic gaps behind most cloud breaches - with fixes as code and a retest",
+        "summary": "A read-only check of 25 AWS settings, built on the open-source Prowler scanner and reviewed by hand, ranks what matters for your company, delivers every fix as Terraform or a single command, and proves it with a retest.",
+        "situation": "A startup or agency with one to three AWS accounts set up quickly over the years by different people, now facing a customer security questionnaire, a first enterprise deal, or India's DPDP Rules.",
+        "problem": [
+          "Public buckets, SSH open to the internet and secrets in Lambda variables are found by automated scanners within hours.",
+          "Nobody switched on CloudTrail, GuardDuty or spend alerts, so a stolen key would be noticed on the monthly bill.",
+          "Generic scanners print hundreds of findings with no priorities, and nobody has time to turn them into fixes."
+        ],
+        "solution": [
+          "A read-only role with an external ID and an explicit deny on reading data; your own CloudTrail records every call.",
+          "Prowler runs 48 curated checks; two native checks add spend alerts and CI/CD keys; every finding is reviewed by a person.",
+          "A scored report (A-F) with the top five risks in plain English and the evidence for each control.",
+          "Fixes as code: inputs of an open-source Terraform security-baseline module, or one reviewed command. You apply them; I never need write access.",
+          "A retest scan shows the new score, what was fixed and what is still open."
+        ],
+        "flow": [
+          "Authorisation letter and read-only role",
+          "Scan: 25 controls, read-only",
+          "Human review and top-5 risks",
+          "Fix pack: Terraform or commands",
+          "Walkthrough, you apply the fixes",
+          "Retest and access removed"
+        ],
+        "plan": [
+          {
+            "when": "Day 0",
+            "what": "We sign a short authorisation letter naming the account, regions and dates; you create the read-only role from my CloudFormation template."
+          },
+          {
+            "when": "Days 1-2",
+            "what": "I run the scan and review every finding by hand: false positives out, intended exceptions noted, risks ranked for your business."
+          },
+          {
+            "when": "Day 3",
+            "what": "Report, fix pack and a 45-minute walkthrough. You apply the fixes, with my help on a screen share if you like."
+          },
+          {
+            "when": "Day 7-14",
+            "what": "Retest scan and updated report; you delete the role and I confirm the scan files are deleted."
+          }
+        ],
+        "evidence": [
+          "On a simulated account seeded with a fictional company's typical mistakes, the baseline scores 31/100 (F) before and 97/100 (A) after the fix pack - both reports are on this site.",
+          "The demo runs the real Prowler checks against a simulated AWS account, and a Terraform sandbox builds a real, deliberately misconfigured account that is scanned and destroyed in one command.",
+          "The fix pack is a tested Terraform module with one input per control; my own AWS account runs the same module."
+        ],
+        "keep": [
+          "Scored report (HTML and PDF) and findings.csv",
+          "Terraform fix pack and one-off commands",
+          "Retest report",
+          "For India: DPDP view and a 72-hour breach runbook template"
+        ],
+        "not_included": [
+          "Penetration testing, incident response or malware removal (I refer you to specialists)",
+          "Compliance certification or legal advice - the DPDP view is technical readiness only",
+          "Changes made by me in your account"
+        ]
+      }
+    },
+    {
+      "id": "S3",
+      "name": "Ship-It CI/CD + Containerisation",
+      "days": "5-10 days",
+      "problem": "Many startups and agencies still deploy by SSH or FTP: no tests, no rollback, nobody wants to deploy on Friday.",
+      "deliverables": [
+        "Dockerfiles",
+        "GitHub Actions: build, test, security scan",
+        "Deploy to ECS (Fargate or Express Mode) or EC2 with automatic rollback",
+        "Terraform for the infrastructure",
+        "README and a handover video"
+      ],
+      "access": "Your repository and a scoped AWS role.",
+      "founding": "$249-499",
+      "standard": "$600-1,200",
+      "india": "₹15k-40k",
+      "proof": "shipit-platform",
+      "case_study": {
+        "title": "From SSH deploys to signed, rolling releases with automatic rollback",
+        "summary": "The app is containerised, built and scanned only in CI, signed, and deployed by digest to ECS with a circuit breaker. A deliberately broken release proves that users see no errors while it rolls itself back.",
+        "situation": "A startup or agency that deploys by SSH, FTP or a script on one person's laptop: no tests before a deploy, no rollback plan, and nobody wants to deploy on a Friday.",
+        "problem": [
+          "Manual deploys are slow, inconsistent and depend on one person being available.",
+          "With no scan or signature, nobody can say exactly what is running in production.",
+          "A broken release means downtime until someone notices and fixes it by hand."
+        ],
+        "solution": [
+          "Dockerfiles and a docker compose setup for local development.",
+          "GitHub Actions: tests, lint, image build, vulnerability scan, SBOM and a keyless cosign signature.",
+          "Terraform for ECS Fargate (or EC2), the load balancer, the database and alarms, with AWS access through OIDC.",
+          "Rolling deployments with health checks and the ECS circuit breaker, plus a one-command rollback."
+        ],
+        "flow": [
+          "git push",
+          "CI: tests and scans",
+          "Build, scan, SBOM, sign",
+          "Verify signature, deploy by digest",
+          "Health checks, automatic rollback",
+          "Alarms and runbook"
+        ],
+        "plan": [
+          {
+            "when": "Day 1-2",
+            "what": "Dockerfiles and local compose; the app runs the same everywhere."
+          },
+          {
+            "when": "Day 3-4",
+            "what": "CI on every pull request: tests, lint, build, scans."
+          },
+          {
+            "when": "Day 5-7",
+            "what": "Terraform for the infrastructure in your account; OIDC deploy role."
+          },
+          {
+            "when": "Day 8-9",
+            "what": "Deploy pipeline with signature check; we break a release on purpose and watch it roll back."
+          },
+          {
+            "when": "Day 10",
+            "what": "README, runbook and a recorded handover."
+          }
+        ],
+        "evidence": [
+          "ShipIt (a link shortener: Go API, Python worker, PostgreSQL, Redis) runs on ECS Fargate for about $0.10 an hour, only during demos.",
+          "break-it deploys a release that fails its health checks: the circuit breaker rolls it back while a probe shows users saw no errors.",
+          "Images are built only in CI, scanned with Trivy, signed with cosign and verified before every deploy."
+        ],
+        "keep": [
+          "Dockerfiles and compose",
+          "CI/CD workflows",
+          "Terraform for your infrastructure",
+          "Runbook and a handover video"
+        ],
+        "not_included": [
+          "Changes to application code beyond what containerising needs",
+          "24/7 support"
+        ]
+      }
+    },
+    {
+      "id": "S6",
+      "name": "GenAI Cost & Safety Guardrails",
+      "days": "3-7 days",
+      "problem": "LLM bills surprise teams, prompts leak personal data, and nobody knows what each AI feature costs.",
+      "deliverables": [
+        "Spend caps and budgets",
+        "Token and cost logging per feature",
+        "Bedrock/OpenAI guardrails and PII redaction",
+        "API key hygiene",
+        "Optional: AI incident summaries for on-call"
+      ],
+      "access": "Your LLM integration code and billing view.",
+      "founding": "$199-399",
+      "standard": "$500-1,000",
+      "india": "₹12k-30k",
+      "proof": "incidentscribe-ai",
+      "case_study": {
+        "title": "AI features with a spending cap, no leaked personal data, and a safe fallback",
+        "summary": "Every AI call is mapped and costed per feature, personal data is removed before it reaches the model, guardrails and strict output checks sit around it, a hard cap stops runaway spend, and every failure falls back to a safe answer.",
+        "situation": "A SaaS that shipped an AI feature quickly: no idea what each feature costs, no hard limit on spend, and customer data going straight into prompts.",
+        "problem": [
+          "AI bills grow faster than usage: every call re-sends instructions, history and documents, and retries are billed again.",
+          "Personal data in prompts and logs worries customers, security reviews and privacy laws.",
+          "When the model fails, is throttled or returns broken output, the feature breaks with it."
+        ],
+        "solution": [
+          "Token and cost logging per feature, and provider budgets with alerts.",
+          "Redaction of personal data and secrets in code, before the call, with tests.",
+          "Provider guardrails (Bedrock Guardrails or moderation) scoped to user input, and strict validation of the model's output.",
+          "Hard daily and monthly caps checked before each call, with a safe fallback when anything fails."
+        ],
+        "flow": [
+          "Map every AI call",
+          "Log tokens and cost per feature",
+          "Redact personal data before the call",
+          "Guardrails and strict output checks",
+          "Hard daily and monthly caps",
+          "Safe fallback on any failure"
+        ],
+        "plan": [
+          {
+            "when": "Day 1",
+            "what": "Map every AI call; add cost logging per feature; compare your real usage with a cost model."
+          },
+          {
+            "when": "Day 2",
+            "what": "Hard caps in code with a fallback; budgets and alerts."
+          },
+          {
+            "when": "Day 3",
+            "what": "Redaction before calls, with tests on realistic data."
+          },
+          {
+            "when": "Day 4",
+            "what": "Guardrails, data boundaries in prompts, strict output validation, key hygiene."
+          },
+          {
+            "when": "Day 5",
+            "what": "A small evaluation set in CI, the report and the handover."
+          }
+        ],
+        "evidence": [
+          "IncidentScribe removes 13 kinds of personal data and secrets before calling Amazon Bedrock; in its 30-case evaluation, no case let raw personal data into a prompt.",
+          "A hard cap ($0.15 a day, $4.50 a month) is checked before every call; when it's reached, users still get a rule-based summary.",
+          "The free Bedrock Bill-Shock Calculator shows a typical support chatbot costing 8.7 times its pricing-page estimate, and which changes cut it most."
+        ],
+        "keep": [
+          "Cost per feature, per day",
+          "Caps with a fallback",
+          "Redaction with tests",
+          "Guardrail and output checks",
+          "An evaluation set in CI"
+        ],
+        "not_included": [
+          "Building new AI features",
+          "Legal advice on privacy law"
+        ]
+      }
+    },
+    {
+      "id": "S5",
+      "name": "Observability & On-call Starter",
+      "days": "5-7 days",
+      "problem": "Teams learn about outages from customers: no dashboards, no useful alerts, no runbooks.",
+      "deliverables": [
+        "Golden-signal dashboards",
+        "5-10 alerts that matter (SLO burn rates)",
+        "Uptime checks",
+        "SLOs and error budgets",
+        "On-call runbooks and Slack routing"
+      ],
+      "access": "Read access to metrics/logs and your alerting tool.",
+      "founding": "$199-399",
+      "standard": "$500-1,000",
+      "india": "₹12k-30k",
+      "proof": "kubeops-sre-lab",
+      "case_study": {
+        "title": "Knowing about outages before your customers do",
+        "summary": "Golden-signal dashboards, SLOs with error budgets, a handful of alerts that matter (multi-window burn rates), uptime checks and runbooks routed to Slack, tested in a game day.",
+        "situation": "A product with paying users that learns about outages from support tickets. Either there are no alerts, or there are so many noisy ones that everyone has muted them.",
+        "problem": [
+          "There's no agreed definition of 'working', so alerts fire on CPU instead of on user pain.",
+          "Noisy alerts get muted, and real incidents get missed.",
+          "No runbooks: every incident starts from zero, at night, with the person who knows the least."
+        ],
+        "solution": [
+          "Dashboards for traffic, errors, latency and saturation for each service.",
+          "SLOs agreed with you (for example 99.5% availability), with recording rules and multi-window, multi-burn-rate alerts that are unit-tested.",
+          "Uptime checks from outside, and routing by severity to Slack or a pager.",
+          "A runbook for every alert, rehearsed in a game day."
+        ],
+        "flow": [
+          "Metrics and logs from each service",
+          "SLOs agreed with you",
+          "Burn-rate alerts (tested)",
+          "Routing to Slack or a pager",
+          "A runbook per alert",
+          "Game day to prove it"
+        ],
+        "plan": [
+          {
+            "when": "Day 1-2",
+            "what": "Inventory of services and signals; dashboards for the golden signals."
+          },
+          {
+            "when": "Day 3",
+            "what": "SLOs agreed with you; recording rules and burn-rate alerts with unit tests."
+          },
+          {
+            "when": "Day 4-5",
+            "what": "Uptime checks, routing, and runbooks for every alert."
+          },
+          {
+            "when": "Day 6-7",
+            "what": "A game day: we inject a failure and follow the runbook; postmortem and fixes."
+          }
+        ],
+        "evidence": [
+          "KubeOps SRE Lab runs Prometheus, Grafana, Loki and Alertmanager on a laptop with one command, all deployed by Argo CD from Git.",
+          "SLOs of 99.5% availability and 99% of requests under 300 ms, with burn-rate alerts unit-tested by promtool.",
+          "Four scripted game days (error spike, latency regression, pod or node failure, blocked insecure deploy), each with a runbook and a postmortem."
+        ],
+        "keep": [
+          "Dashboards and alert rules as code",
+          "SLO document with error budgets",
+          "Runbooks and routing",
+          "Game-day report"
+        ],
+        "not_included": [
+          "Being on call for you",
+          "Migrating to a different monitoring vendor"
+        ]
+      }
+    },
+    {
+      "id": "S4",
+      "name": "Backup & Restore Drill",
+      "days": "3-5 days",
+      "problem": "Most teams have backups but have never restored one - and scripts or AI agents can delete production and its backups with the same credentials.",
+      "deliverables": [
+        "Backup inventory and isolation check",
+        "Timed restore into an isolated sandbox",
+        "Data integrity checks",
+        "RTO/RPO report",
+        "Restore runbook"
+      ],
+      "access": "A scoped role; the drill never touches production data.",
+      "founding": "$149-299",
+      "standard": "$300-700",
+      "india": "₹9k-20k",
+      "proof": "restore-drill-kit",
+      "case_study": {
+        "title": "Proving the backups restore, and measuring how long it takes",
+        "summary": "A backup is restored into an isolated sandbox, the data is proven identical with 13 checks, recovery time and data loss are measured against your targets, and the backups are checked for whether one identity could delete them along with production.",
+        "situation": "A SaaS team on RDS or PostgreSQL with automated backups switched on, but nobody has ever restored one, and the recovery time promised in contracts is a guess.",
+        "problem": [
+          "Backups that have never been restored are a hope, not a plan: jobs stop silently, tables go missing, restores take hours.",
+          "RTO and RPO are guesses, even when customers or auditors ask for them.",
+          "The same credentials can often delete the database and every backup, as an AI agent did to a company's production data in April 2026."
+        ],
+        "solution": [
+          "A backup inventory and isolation report: retention, deletion protection, public or shared snapshots, cross-region and cross-account copies, locked vaults, and what your app's role could delete.",
+          "A timed restore into a new sandbox instance (snapshot and point in time), never over production.",
+          "13 data checks against a manifest: row counts, checksums, broken relationships, business totals.",
+          "A report with RTO and RPO against your targets, and a runbook your team can follow."
+        ],
+        "flow": [
+          "Backup inventory and isolation check",
+          "Restore into an isolated sandbox",
+          "13 data checks against a manifest",
+          "Measure RTO and RPO",
+          "Delete the sandbox",
+          "Report and runbook"
+        ],
+        "plan": [
+          {
+            "when": "Day 1",
+            "what": "Agree targets and checks; you create a scoped role; isolation report."
+          },
+          {
+            "when": "Day 2",
+            "what": "First drill from the latest snapshot, verified inside your network, sandbox deleted the same day."
+          },
+          {
+            "when": "Day 3",
+            "what": "Point-in-time drill and comparison with your targets."
+          },
+          {
+            "when": "Day 4",
+            "what": "Report, runbook and walkthrough."
+          }
+        ],
+        "evidence": [
+          "Every push to the kit's repository runs a real restore of 5,000 synthetic customers and all 13 checks.",
+          "On AWS, the kit restores RDS from a snapshot or a point in time into a sandbox with its own security group, then deletes it.",
+          "Isolation checks flag public snapshots, shared-but-not-copied snapshots, missing cross-region copies and app roles that could delete backups."
+        ],
+        "keep": [
+          "Isolation report with fixes",
+          "Two timed drills (snapshot and point in time)",
+          "RTO/RPO report against your targets",
+          "A restore runbook"
+        ],
+        "not_included": [
+          "Changes to production settings (quoted as drill + hardening)",
+          "Application-level failover"
+        ]
+      }
+    },
+    {
+      "id": "S7",
+      "name": "Server Setup & Hardening (Ansible)",
+      "days": "2-3 days",
+      "problem": "Most small companies still run on a VPS or EC2 set up by hand: password SSH, no firewall, months of missing patches, no backups - and nobody can rebuild it if it dies.",
+      "deliverables": [
+        "Before/after security score (Lynis) with every finding explained",
+        "Key-only SSH, firewall, fail2ban and nightly security patches",
+        "HTTPS with security headers, backups with a tested restore",
+        "Everything as Ansible code in your repository: rebuild any server in minutes",
+        "Optional: releases with health checks and one-command rollback",
+        "Add-on: email and domain security - SPF, DKIM, DMARC staged to reject, CAA - with a before/after Lifeline score"
+      ],
+      "access": "A key-only user with sudo, on a snapshot or staging copy first - never a root password.",
+      "founding": "$99-249",
+      "standard": "$250-500",
+      "india": "₹6k-15k",
+      "proof": "serverforge",
+      "case_study": {
+        "title": "Hardening a hand-built server, and making it rebuildable",
+        "summary": "The server is audited (a before score), hardened with Ansible in one idempotent run, given HTTPS, backups and monitoring, audited again (an after score), and checked for drift every night. Everything is code, so it can be rebuilt in minutes.",
+        "situation": "A small company running its site or app on a VPS or EC2 instance set up by hand years ago: password SSH, no firewall, months of missing patches, no tested backups, and nobody who could rebuild it.",
+        "problem": [
+          "Password SSH and open ports are scanned by bots within minutes of a server going online.",
+          "Missing patches and no backups turn one bad day into a lost business.",
+          "If the server dies, nobody knows how it was built."
+        ],
+        "solution": [
+          "A snapshot first, then a read-only Lynis audit: the 'before' score with every finding explained.",
+          "Ansible roles for key-only SSH (validated before reload, so you can't be locked out), a default-deny firewall, fail2ban and nightly security patches.",
+          "HTTPS with security headers, the app in a systemd sandbox, backups with a tested restore, and monitoring.",
+          "An 'after' audit, a nightly drift check, and releases with a health gate and automatic rollback.",
+          "Optional add-on: email and domain security from public DNS only - one SPF record, DKIM for every sender, DMARC moved from monitoring to reject over a few weeks so no real mail is lost, and CAA."
+        ],
+        "flow": [
+          "Snapshot first",
+          "Lynis audit: before score",
+          "Ansible hardening (idempotent)",
+          "HTTPS, backups, monitoring",
+          "Lynis audit: after score",
+          "Nightly drift check"
+        ],
+        "plan": [
+          {
+            "when": "Day 1",
+            "what": "Snapshot (by you), key-only access for me, the 'before' audit; we agree what may change."
+          },
+          {
+            "when": "Day 2",
+            "what": "Hardening on a staging copy first, then the live server; HTTPS, backups and a restore test."
+          },
+          {
+            "when": "Day 3",
+            "what": "The 'after' audit, the report, and handover of the Ansible code into your repository."
+          }
+        ],
+        "evidence": [
+          "In ServerForge's container lab, the Lynis score goes from 60 to 80 after one Ansible run (real servers score differently; the report shows both runs).",
+          "CI runs every role twice and fails if the second run changes anything.",
+          "Releases go out one server at a time behind a health gate with automatic rollback; a nightly check-mode run catches hand edits."
+        ],
+        "keep": [
+          "Before/after audit report",
+          "Ansible code in your repository",
+          "Backups with a tested restore",
+          "A rebuild runbook"
+        ],
+        "not_included": [
+          "Application changes",
+          "Managing the server month to month (care plan available)"
+        ]
+      }
+    }
+  ],
+  "projects": [
+    {
+      "slug": "lifeline",
+      "name": "Lifeline",
+      "kind": "Flagship · open source",
+      "label": "Live (GitHub Action)",
+      "label_class": "live",
+      "summary": "An operational-resilience scorecard: would your project survive a bad day? Checks domain and TLS expiry, access bus-factor, CI hygiene, backup independence and cloud-credit runway, and publishes a score, a badge and SARIF.",
+      "stack": [
+        "Go (zero dependencies)",
+        "GitHub Action",
+        "SARIF",
+        "RDAP/DNS/TLS",
+        "GoReleaser + cosign"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/lifeline",
+      "demo": "https://obaidabdullah16.github.io/lifeline/",
+      "demo_label": "Live scorecard",
+      "video": "",
+      "highlights": [
+        "22 checks in five families (now with DKIM and the SPF lookup limit), one 0-10 score (always shown with its coverage) and a README badge",
+        "Runs as a CLI or a GitHub Action, opens an issue when the score drops",
+        "Zero third-party Go modules; release binaries with SBOMs and a keyless cosign signature"
+      ],
+      "services": [
+        "S1",
+        "S2",
+        "S4"
+      ]
+    },
+    {
+      "slug": "shipit-platform",
+      "name": "ShipIt Platform",
+      "kind": "Resume project",
+      "label": "Live on demand · demo data",
+      "label_class": "demand",
+      "summary": "Secure CI/CD on AWS ECS Fargate: every release is tested, scanned, signed with cosign and deployed by digest; a bad release rolls itself back while the old version keeps serving.",
+      "stack": [
+        "Go",
+        "Python",
+        "PostgreSQL",
+        "Redis",
+        "Terraform",
+        "ECS Fargate",
+        "GitHub Actions OIDC",
+        "Trivy",
+        "Syft",
+        "cosign"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/shipit-platform",
+      "demo": "",
+      "demo_label": "",
+      "video": "",
+      "highlights": [
+        "Only CI-signed images can be deployed (cosign verify before every rollout)",
+        "ECS circuit breaker: automatic rollback, proven by a scripted break-it demo",
+        "One-click up/down: ~$0.10/hour while running"
+      ],
+      "services": [
+        "S3",
+        "S2"
+      ]
+    },
+    {
+      "slug": "kubeops-sre-lab",
+      "name": "KubeOps SRE Lab",
+      "kind": "Resume project",
+      "label": "Local live · simulated incidents",
+      "label_class": "demand",
+      "summary": "A Kubernetes platform that runs on a laptop with one command and is broken on purpose: GitOps with Argo CD, Kyverno policies with signature verification, Prometheus/Grafana/Loki, SLO burn-rate alerts and four game days with postmortems.",
+      "stack": [
+        "Kubernetes",
+        "Argo CD",
+        "Helm",
+        "Kyverno",
+        "Prometheus",
+        "Grafana",
+        "Loki",
+        "kind",
+        "EKS"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/kubeops-sre-lab",
+      "demo": "",
+      "demo_label": "",
+      "video": "",
+      "highlights": [
+        "Multi-window, multi-burn-rate SLO alerts - unit-tested with promtool",
+        "Only images signed by CI are admitted (Kyverno ImageValidatingPolicy)",
+        "Game days with runbooks and three written postmortems"
+      ],
+      "services": [
+        "S5"
+      ]
+    },
+    {
+      "slug": "incidentscribe-ai",
+      "name": "IncidentScribe AI",
+      "kind": "Resume project",
+      "label": "Live · capped at $5/month · synthetic incidents",
+      "label_class": "live",
+      "summary": "Alert in, on-call summary out: CloudWatch or Alertmanager alerts become a short incident brief grounded in runbooks, with PII redaction, Bedrock Guardrails and a hard daily and monthly cost cap.",
+      "stack": [
+        "Python",
+        "AWS Lambda",
+        "Amazon Bedrock",
+        "Bedrock Guardrails",
+        "EventBridge",
+        "API Gateway",
+        "Terraform"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/incidentscribe-ai",
+      "demo": "demos/incidentscribe/",
+      "demo_label": "Try the live demo",
+      "video": "",
+      "highlights": [
+        "Runbook retrieval (RAG) so answers cite real procedures",
+        "30-incident evaluation set with scores",
+        "Budget guard: refuses work before the cap is reached"
+      ],
+      "services": [
+        "S6",
+        "S5"
+      ]
+    },
+    {
+      "slug": "serverforge",
+      "name": "ServerForge",
+      "kind": "Resume project",
+      "label": "Lab runs in CI · demo servers",
+      "label_class": "demand",
+      "summary": "Linux servers as code with Ansible and Jenkins: hardened in one run (Lynis score 60 to 80 in the lab), released with a health gate and automatic rollback, and checked for drift every night.",
+      "stack": [
+        "Ansible",
+        "Jenkins (JCasC)",
+        "Linux / systemd",
+        "nginx",
+        "ufw + fail2ban",
+        "Lynis",
+        "Terraform",
+        "EC2",
+        "GitHub Actions",
+        "Python"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/serverforge",
+      "demo": "demos/serverforge/report.html",
+      "demo_label": "Sample hardening report",
+      "video": "",
+      "highlights": [
+        "8 idempotent Ansible roles; CI fails if a second run changes anything",
+        "Broken release stopped on the first server and rolled back automatically",
+        "Jenkins built entirely from code (plugins + JCasC) with a controller/agent split",
+        "Nightly drift check catches hand edits and firewall rules opened by hand"
+      ],
+      "services": [
+        "S7",
+        "S3"
+      ]
+    },
+    {
+      "slug": "bedrock-cost-calculator",
+      "name": "Bedrock Bill-Shock Calculator",
+      "kind": "Free tool",
+      "label": "Live · free · runs in your browser",
+      "label_class": "live",
+      "summary": "Estimates the real Amazon Bedrock bill - system prompts, chat history, RAG, agent loops, retries, Guardrails, vector stores and logging - and ranks the changes that cut it most.",
+      "stack": [
+        "JavaScript",
+        "Amazon Bedrock pricing",
+        "FinOps",
+        "GitHub Pages",
+        "Node test runner"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/bedrock-cost-calculator",
+      "demo": "tools/bedrock-calculator/",
+      "demo_label": "Open the calculator",
+      "video": "",
+      "highlights": [
+        "Shows how many times bigger the real bill is than the pricing-page estimate",
+        "Savings ideas with one-click Apply: caching, history window, fewer chunks, cheaper model",
+        "Dated price data with sources; nothing leaves the browser"
+      ],
+      "services": [
+        "S6",
+        "S1"
+      ]
+    },
+    {
+      "slug": "aws-bill-doctor",
+      "name": "AWS Bill Doctor kit (cost + security)",
+      "kind": "Freelance demo",
+      "label": "Proof pack · synthetic + sandbox accounts",
+      "label_class": "proof",
+      "summary": "Read-only AWS audits in one tool: a cost and waste scanner with 12 checks and savings estimates, and a 25-control security baseline built on Prowler with a score, fixes as code and a retest. One role, one report format - the \"AWS Health Check\".",
+      "stack": [
+        "Python",
+        "boto3",
+        "Prowler (OCSF)",
+        "CloudFormation",
+        "Terraform",
+        "Jinja2"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/aws-bill-doctor",
+      "demo": "demos/bill-doctor/report.html",
+      "demo_label": "Sample report",
+      "video": "",
+      "highlights": [
+        "Read-only role with an explicit deny on reading data (CloudFormation one-click or Terraform)",
+        "Cost findings ranked by monthly savings; security controls scored A-F with a retest view",
+        "Real Prowler checks against a simulated account in CI; a Terraform sandbox for a real-account demo",
+        "India variant: DPDP technical-safeguards view with a 72-hour breach runbook"
+      ],
+      "services": [
+        "S1",
+        "S8"
+      ],
+      "extra_demos": [
+        {
+          "label": "Security baseline (before)",
+          "url": "demos/security-check/report.html"
+        },
+        {
+          "label": "Retest (after)",
+          "url": "demos/security-check/retest/report.html"
+        },
+        {
+          "label": "Real sandbox scan",
+          "url": "demos/security-check/real/report.html"
+        },
+        {
+          "label": "DPDP view",
+          "url": "demos/security-check/dpdp/report.html"
+        },
+        {
+          "label": "AWS Health Check summary",
+          "url": "demos/health-check/index.html"
+        }
+      ]
+    },
+    {
+      "slug": "gha-hardening-kit",
+      "name": "GitHub Actions Hardening kit",
+      "kind": "Freelance demo",
+      "label": "Live on GitHub · real repository",
+      "label_class": "live",
+      "summary": "Before/after workflows, an audit tool that scores a repository's GitHub Actions security, an incident-exposure check for the 2025-26 supply-chain attacks, a secrets-history scan that produces a rotation plan, reusable hardened workflows and an OIDC Terraform module.",
+      "stack": [
+        "Python",
+        "GitHub Actions",
+        "OIDC",
+        "Terraform",
+        "zizmor",
+        "Gitleaks",
+        "SARIF"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/gha-hardening-kit",
+      "demo": "https://obaidabdullah16.github.io/gha-hardening-kit/",
+      "demo_label": "Live audit report",
+      "video": "",
+      "highlights": [
+        "16 rules: unpinned actions, token permissions, pull_request_target, script injection...",
+        "\"Were we affected?\": references, git history and workflow runs inside the tj-actions, reviewdog, Trivy and Checkmarx windows",
+        "Secrets in history turned into a rotation plan - values never shown or tested",
+        "AWS access with zero stored keys"
+      ],
+      "services": [
+        "S2",
+        "S3"
+      ]
+    },
+    {
+      "slug": "restore-drill-kit",
+      "name": "Restore Drill kit",
+      "kind": "Freelance demo",
+      "label": "Run on demand · synthetic data",
+      "label_class": "proof",
+      "summary": "Restores an RDS PostgreSQL snapshot into an isolated sandbox, verifies the data, measures RTO/RPO, checks backup isolation and tears everything down.",
+      "stack": [
+        "Python",
+        "Terraform",
+        "RDS PostgreSQL",
+        "S3",
+        "Bash"
+      ],
+      "repo": "https://github.com/ObaidAbdullah16/restore-drill-kit",
+      "demo": "demos/restore-drill/report.html",
+      "demo_label": "Sample RTO/RPO report",
+      "video": "",
+      "highlights": [
+        "Timed restore with row counts and checksums",
+        "Isolation check: can production credentials delete the backups?",
+        "Costs cents per drill"
+      ],
+      "services": [
+        "S4"
+      ]
+    }
+  ]
+}

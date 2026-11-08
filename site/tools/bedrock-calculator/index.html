@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bedrock Bill-Shock Calculator</title>
+<meta name="description" content="Estimate your real Amazon Bedrock bill: system prompts, chat history, RAG context, agent loops, retries, Guardrails, vector stores and logging - not just question and answer.">
+<meta property="og:title" content="Bedrock Bill-Shock Calculator">
+<meta property="og:description" content="Your real Amazon Bedrock bill, not the pricing-page guess. Free, runs in your browser.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f6b5c'/%3E%3Cpath d='M9 22V10h8a4 4 0 0 1 0 8H9m6 0 5 4' stroke='%23fff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Free tool &middot; runs entirely in your browser</p>
+    <h1>Bedrock Bill-Shock Calculator</h1>
+    <p class="lead">Your real Amazon Bedrock bill, not the pricing-page guess. Every call also re-sends the
+      system prompt, the chat history, retrieved documents and tool results, and Guardrails, the vector
+      database and logging are billed on top. Add it all up before your first invoice does.</p>
+    <div class="presets" role="group" aria-label="Start from an example">
+      <span class="muted">Start from:</span>
+      <button type="button" data-preset="support">Support chatbot with RAG</button>
+      <button type="button" data-preset="agent">Internal agent with tools</button>
+      <button type="button" data-preset="summarizer">Document summarizer</button>
+      <button type="button" data-preset="mvp">Startup MVP chat</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <form id="form" class="inputs" autocomplete="off" novalidate>
+    <fieldset>
+      <legend>Traffic</legend>
+      <label>Daily active users <input type="number" id="users" min="0" step="1"></label>
+      <label>Conversations per user per day <input type="number" id="conversationsPerUser" min="0" step="0.5"></label>
+      <label>Messages per conversation <input type="number" id="turns" min="1" step="1"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Prompt</legend>
+      <label>System prompt + tool definitions (tokens) <input type="number" id="systemTokens" min="0" step="100">
+        <small>Sent with every single call. 1 token is about 4 characters of English.</small></label>
+      <label>User message (tokens) <input type="number" id="userTokens" min="0" step="10"></label>
+      <label>Answer length (tokens) <input type="number" id="outputTokens" min="0" step="10">
+        <small>Output costs 4-5x more than input on most models.</small></label>
+      <label>Chat history sent with each message
+        <select id="history">
+          <option value="full">The whole conversation</option>
+          <option value="window">Only the last few messages</option>
+          <option value="none">None (every message stands alone)</option>
+        </select></label>
+      <label class="dep" data-dep="history=window">Messages kept <input type="number" id="historyWindow" min="0" step="1"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Knowledge base (RAG)</legend>
+      <label>Chunks retrieved per message <input type="number" id="ragChunks" min="0" step="1">
+        <small>0 = no retrieval.</small></label>
+      <label>Tokens per chunk <input type="number" id="chunkTokens" min="0" step="50"></label>
+      <label>Vector store
+        <select id="vectorStore"></select></label>
+      <label class="dep" data-dep="vectorStore=s3vectors|custom">Vector store cost (USD per month) <input type="number" id="vectorStoreCustom" min="0" step="1">
+        <small>S3 Vectors: leave 0 to use a $5 starting estimate.</small></label>
+      <label>Documents to index (tokens) <input type="number" id="corpusTokens" min="0" step="100000"></label>
+      <label>Re-indexing runs per month <input type="number" id="reindexPerMonth" min="0" step="1"></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Agents and reliability</legend>
+      <label>Tool calls per message (agent steps) <input type="number" id="agentSteps" min="0" step="1">
+        <small>Each step is another full model call with the whole context.</small></label>
+      <label>Tool result size (tokens) <input type="number" id="toolResultTokens" min="0" step="50"></label>
+      <label>Tokens the model writes per tool call <input type="number" id="stepOutputTokens" min="0" step="10"></label>
+      <label>Calls retried (%) <input type="number" id="retryRate" min="0" max="100" step="1">
+        <small>Timeouts, throttling, invalid JSON: each retry is billed again.</small></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Model and pricing</legend>
+      <label>Model <select id="model"></select></label>
+      <p class="model-note muted" id="modelNote"></p>
+      <label>Endpoint
+        <select id="endpoint">
+          <option value="global">Global cross-Region</option>
+          <option value="geo">Geographic / in-Region (data residency)</option>
+        </select></label>
+      <label class="check"><input type="checkbox" id="caching"> Prompt caching for the system prompt</label>
+      <p class="muted small" id="cacheNote"></p>
+      <label>Traffic sent as batch jobs (%) <input type="number" id="batchShare" min="0" max="100" step="5">
+        <small>Batch is 50% cheaper for work that can wait.</small></label>
+      <details class="override">
+        <summary>Use your own prices for this model</summary>
+        <label>Input (USD per 1M tokens) <input type="number" id="ovInput" min="0" step="0.01"></label>
+        <label>Output (USD per 1M tokens) <input type="number" id="ovOutput" min="0" step="0.01"></label>
+        <button type="button" id="ovReset" class="link">Back to listed prices</button>
+      </details>
+    </fieldset>
+
+    <fieldset>
+      <legend>Guardrails and logging</legend>
+      <label class="check"><input type="checkbox" id="g_contentFilters"> Content filters</label>
+      <label class="check"><input type="checkbox" id="g_deniedTopics"> Denied topics</label>
+      <label class="check"><input type="checkbox" id="g_pii"> Sensitive information (PII) filter</label>
+      <label class="check"><input type="checkbox" id="g_grounding"> Contextual grounding check</label>
+      <label>What Guardrails checks
+        <select id="guardrailScope">
+          <option value="user">Only the user message and the answer</option>
+          <option value="full">The whole prompt (system, history, documents)</option>
+        </select></label>
+      <label class="check"><input type="checkbox" id="logging"> Model invocation logging to CloudWatch Logs</label>
+    </fieldset>
+  </form>
+
+  <aside class="results" id="results" aria-live="polite">
+    <div class="card total">
+      <p class="label">Estimated monthly bill</p>
+      <p class="big" id="monthly">-</p>
+      <div class="stats">
+        <div><span>Per day</span><b id="daily">-</b></div>
+        <div><span>Per conversation</span><b id="perConv">-</b></div>
+        <div><span>Per user / month</span><b id="perUser">-</b></div>
+      </div>
+      <p class="shock" id="shock"></p>
+    </div>
+
+    <div class="card">
+      <h2>Where the money goes</h2>
+      <div id="bars" class="bars"></div>
+      <p class="muted small" id="tokensLine"></p>
+    </div>
+
+    <div class="card">
+      <h2>Ways to cut it</h2>
+      <ol id="ideas" class="ideas"></ol>
+    </div>
+
+    <div class="actions">
+      <button type="button" id="copyLink">Copy share link</button>
+      <button type="button" id="copySummary">Copy summary</button>
+      <span id="copied" class="muted small" role="status"></span>
+    </div>
+  </aside>
+</main>
+
+<section class="wrap explain">
+  <h2>Why Bedrock bills surprise teams</h2>
+  <div class="grid">
+    <article><h3>History is re-sent</h3><p>Message 10 of a chat sends the previous 9 questions and answers again. Input grows with every turn.</p></article>
+    <article><h3>Context is re-sent</h3><p>The system prompt, tool definitions and retrieved documents ride along on every call, often 10-50x the question itself.</p></article>
+    <article><h3>Agents multiply calls</h3><p>One question can become 3-10 model calls when an agent uses tools, each one with the full context.</p></article>
+    <article><h3>The extras are billed separately</h3><p>Guardrails per 1,000 characters per policy, an OpenSearch Serverless minimum around the clock, and logging per GB.</p></article>
+  </div>
+
+  <div class="callout">
+    <h2>Guardrails I set up so this never becomes a surprise</h2>
+    <ul>
+      <li>AWS Budgets and Cost Anomaly Detection alerts on the Bedrock spend</li>
+      <li>A hard daily and monthly cap with a kill switch, per user and per feature</li>
+      <li><code>max_tokens</code> on every call, a history window, and prompt caching</li>
+      <li>Cost per feature with application inference profiles and tags</li>
+      <li>Guardrails scoped to user input, with PII redaction before logging</li>
+    </ul>
+    <p>Want your setup checked? The <b>GenAI Cost &amp; Safety Check</b> is a fixed-price review with a written report and the fixes.</p>
+    <p><a class="btn primary" id="cta" href="#">See the service</a></p>
+  </div>
+
+  <h2>Prices used</h2>
+  <p class="muted" id="priceBasis"></p>
+  <div class="table"><table id="priceTable"></table></div>
+  <p class="muted small" id="sources"></p>
+</section>
+
+<a class="mobile-total" href="#results" id="mobileTotal" aria-hidden="true" tabindex="-1">-</a>
+
+<footer class="wrap muted small">
+  <p>Estimates only. Prices change often and differ by region; check the AWS pricing page before you decide or quote.
+    Not affiliated with or endorsed by Amazon Web Services. Your inputs never leave this page; the share link keeps
+    them after the # in the address, which browsers do not send to any server.
+    Made by <span id="author"></span> &middot; <a id="repo" href="#">Source code</a></p>
+</footer>
+
+<script src="config.js"></script>
+<script src="prices.js"></script>
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

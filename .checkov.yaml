@@ -1,0 +1,12 @@
+# Skipped on purpose for a static personal site (cost/benefit noted per check).
+skip-check:
+  - CKV2_AWS_47   # WAF + Log4j rule: no server-side code to attack; WAF costs ~$6/month
+  - CKV_AWS_68    # WAF on CloudFront: same reason
+  - CKV2_AWS_62   # S3 event notifications: nothing consumes them
+  - CKV_AWS_144   # Cross-region replication: the site is rebuilt from Git in a minute
+  - CKV_AWS_145   # SSE-KMS: public website content; SSE-S3 is enough and free
+  - CKV_AWS_174   # TLS 1.2 minimum: enforced when a custom domain is used; the default *.cloudfront.net certificate cannot set it
+  - CKV_AWS_18    # S3 access logs: CloudFront is the only reader
+  - CKV_AWS_86    # CloudFront access logs: extra bucket and cost for a portfolio
+  - CKV_AWS_310   # Origin failover: single static origin, rebuilt from Git
+  - CKV_AWS_374   # Geo restriction: the portfolio is for everyone
